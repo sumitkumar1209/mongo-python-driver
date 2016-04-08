@@ -79,6 +79,7 @@ from bson import EPOCH_AWARE, RE_TYPE, SON
 from bson.binary import Binary
 from bson.code import Code
 from bson.dbref import DBRef
+from bson.decimal128 import Decimal128
 from bson.int64 import Int64
 from bson.max_key import MaxKey
 from bson.min_key import MinKey
@@ -200,6 +201,8 @@ def object_hook(dct):
     if "$timestamp" in dct:
         tsp = dct["$timestamp"]
         return Timestamp(tsp["t"], tsp["i"])
+    if "$numberDecimal" in dct:
+        return Decimal128(dct["$numberDecimal"])
     return dct
 
 
@@ -254,4 +257,6 @@ def default(obj):
             ('$type', "00")])
     if isinstance(obj, uuid.UUID):
         return {"$uuid": obj.hex}
+    if isinstance(obj, Decimal128):
+        return {"$numberDecimal": str(obj)}
     raise TypeError("%r is not JSON serializable" % obj)
