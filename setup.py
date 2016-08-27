@@ -279,7 +279,7 @@ else:
     extra_opts['ext_modules'] = ext_modules
 
 setup(
-    name="pymongo3",
+    name="pymongo",
     version=version,
     description="Python driver for MongoDB <http://www.mongodb.org>",
     long_description=readme_content,
